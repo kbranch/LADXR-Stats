@@ -11,8 +11,10 @@ from model import Rom, Location, Flag, Item
 
 def main():
     parser = argparse.ArgumentParser(description='LADXR log consumer')
-    parser.add_argument("--logPath", dest="logPath", type=str)
-    parser.add_argument("--dbPath", dest="dbPath", default="ladxr_stats.sqlite", type=str, required=False)
+    parser.add_argument("--logPath", dest="logPath", type=str, required=True,
+        help="Path to a directory that contains json log files from LADXR")
+    parser.add_argument("--dbPath", dest="dbPath", default="ladxr_stats.sqlite", type=str, required=False,
+        help="Path to the SQLite database file")
     args = parser.parse_args()
 
     engine = sqlalchemy.create_engine(f'sqlite:///{args.dbPath}')
@@ -23,13 +25,13 @@ def main():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # seenLocations = session.query(Location.name, Location).all()
     seenLocations = {}
+    results = session.query(Location.name, Location).all()
+    for row in results:
+        seenLocations[row.name] = row.Location
 
-    i = 0
     logGlob = glob(os.path.join(args.logPath, '*.json'))
     for path in logGlob:
-        i += 1
         with open(path, 'r') as iFile:
             log = json.load(iFile)
         

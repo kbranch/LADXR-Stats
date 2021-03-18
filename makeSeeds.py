@@ -32,12 +32,14 @@ def makeSeeds(ladxrPath, flagsFile, seedCount):
             activeProcesses = activeProcesses.difference(finishedProcesses)
             time.sleep(0.1)
 
-
 def main():
     parser = argparse.ArgumentParser(description='LADXR bulk seed generator')
-    parser.add_argument("--ladxrPath", dest="ladxrPath", type=str)
-    parser.add_argument("--ladxrFlagsFile", dest="ladxrFlagsFile", type=str)
-    parser.add_argument("--seedCount", dest="seedCount", type=int)
+    parser.add_argument("--ladxrPath", dest="ladxrPath", type=str, required=True,
+        help="Path to the directory that LADXR lives in")
+    parser.add_argument("--ladxrFlagsFile", dest="ladxrFlagsFile", type=str, required=True,
+        help="Path to a json file that contains a list of command line arguments to pass to LADXR when generating seeds")
+    parser.add_argument("--seedCount", dest="seedCount", type=int, required=True,
+        help="Number of seeds to generate")
     args = parser.parse_args()
 
     startTime = datetime.datetime.now()

@@ -54,3 +54,47 @@ getRomCountQuery = """
 select count(*)
 from rom
 """
+
+itemFrequencyQuery = """
+select location
+      ,item
+	  ,count(item) - 1 as 'count'
+from (
+select printf('%s: %s - %s', location.name, location.area, location.description) as 'location'
+       ,item.name as 'item'
+from location
+join item
+  on item.locationId = location.id
+where location.name = '{0}'
+
+union all
+
+select printf('%s: %s - %s', location.name, location.area, location.description) as 'location'
+       ,item.name as 'item'
+from item
+join location
+  on location.name = '{0}'
+group by item.name
+)
+group by location
+		,item
+order by item
+"""
+
+getAllLocationNamesQuery = """
+select distinct location.name
+from location
+order by location.area, location.description
+"""
+
+getAllItemNamesQuery = """
+select distinct item.name
+from item
+order by item.name
+"""
+
+getFullLocationNameQuery = """
+select printf('%s: %s - %s', location.name, location.area, location.description)
+from location
+where location.name = ?
+"""

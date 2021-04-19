@@ -99,7 +99,7 @@ itemWeights = {"SHIELD": 0.5,
 def bestFitFunction(x, a, b):
     return a * pow(x, b)
 
-def sampleLogs():
+def suggestSampleSize():
     runCount = 5
     sampleSizes = [125, 250, 500, 1000, 2000]
     averageCVs = {}
@@ -173,9 +173,37 @@ def sampleLogs():
         oFile.write(equation + '\n')
         oFile.write(f"Suggested sample size for a standard deviation of {targetStdDeviation}%: {suggestedSampleSize}" + '\n')
     
+def createItemFrequencyTable():
+    conn = sqlite3.connect('ladxr_stats.sqlite')
+    cursor = conn.cursor()
+    cursor.execute(getAllLocationNamesQuery)
+    locationNames = [x[0] for x in cursor.fetchall()]
+
+    cursor.execute(getAllItemNamesQuery)
+    itemNames = [x[0] for x in cursor.fetchall()]
+
+    with open('itemFrequencyTable.csv', 'w') as oFile:
+        oFile.write(f",{','.join(itemNames)}\n")
+
+        for locationName in locationNames:
+            print(f"Fetching {locationName}")
+
+            cursor.execute(getFullLocationNameQuery, (locationName,))
+            fullName = cursor.fetchone()[0]
+            oFile.write(f'"{fullName}",')
+            
+            cursor.execute(itemFrequencyQuery.format(locationName))
+            rows = cursor.fetchall()
+
+            for row in rows:
+                oFile.write(f'{row[2]},')
+            
+            oFile.write('\n')
+
+            # break
 
 def main():
-    sampleLogs()
+    createItemFrequencyTable()
 
 if __name__ == "__main__":
     main()

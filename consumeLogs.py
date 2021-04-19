@@ -35,16 +35,16 @@ def main():
         with open(path, 'r') as iFile:
             log = json.load(iFile)
         
-        result = session.query(Rom.seed).filter(Rom.seed == log['seed']).first()
+        result = session.query(Rom.seed).filter(Rom.seed == path).first()
 
         if result:
-            print(f"Seed {log['seed']} already exists, skipping {path}")
+            print(f"File {path} already exists in database, skipping")
             continue
 
-        newRom = Rom(log['seed'])
+        newRom = Rom(path)
 
-        for arg in log['args']:
-            Flag(arg, log['args'][arg], newRom)
+        for arg in log['options']:
+            Flag(arg, log['options'][arg], newRom)
         
         for item in log['accessibleItems']:
             if item['id'] not in seenLocations:

@@ -1,3 +1,11 @@
 logs
+fantasyLogs
+csvs
+NUL
+queryResults
 __pycache__
 *.sqlite
+*.sqlite-journal
+*.csv
+*.xls*
+.vscode/.ropeproject/

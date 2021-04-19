@@ -1,1 +1,1 @@
-["../LADXR-daid/ladx1.0.gbc", "--logdirectory=logs", "--output=/dev/null"]
+["../LADXR-daid/ladx1.0.gbc", "--logdirectory=logs", "--output=NUL",  "--heartpiece",  "--seashells",  "--witch", "--boomerang=gift", "--keysanity"]

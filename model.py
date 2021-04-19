@@ -7,10 +7,10 @@ Base = declarative_base()
 class Location(Base):
     __tablename__ = 'location'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
-    area = Column(String)
+    area = Column(String, index=True)
 
     def __init__(self, name, description, area):
         self.name = name
@@ -20,7 +20,7 @@ class Location(Base):
 class Rom(Base):
     __tablename__ = 'rom'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     seed = Column(String)
 
     def __init__(self, seed):
@@ -29,11 +29,11 @@ class Rom(Base):
 class Flag(Base):
     __tablename__ = 'flag'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    value = Column(String)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    value = Column(String, index=True)
 
-    romId = Column(Integer, ForeignKey('rom.id'))
+    romId = Column(Integer, ForeignKey('rom.id'), index=True)
     rom = relationship("Rom", back_populates="flags")
 
     def __init__(self, name, value, rom):
@@ -44,15 +44,15 @@ class Flag(Base):
 class Item(Base):
     __tablename__ = 'item'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    sphere = Column(Integer)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    sphere = Column(Integer, index=True)
     player = Column(Integer)
 
-    locationId = Column(Integer, ForeignKey('location.id'))
+    locationId = Column(Integer, ForeignKey('location.id'), index=True)
     location = relationship("Location")
 
-    romId = Column(Integer, ForeignKey('rom.id'))
+    romId = Column(Integer, ForeignKey('rom.id'), index=True)
     rom = relationship("Rom", back_populates='items')
 
     def __init__(self, name, sphere, player, location, rom):

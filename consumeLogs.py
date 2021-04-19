@@ -44,7 +44,7 @@ def main():
         newRom = Rom(log['seed'])
 
         for arg in log['args']:
-            flag = Flag(arg, log['args'][arg], newRom)
+            Flag(arg, log['args'][arg], newRom)
         
         for item in log['accessibleItems']:
             if item['id'] not in seenLocations:
@@ -53,7 +53,7 @@ def main():
 
                 seenLocations[item['id']] = loc
             
-            dbItem = Item(item['itemName'], item['sphere'], item['player'], seenLocations[item['id']], newRom)
+            Item(item['itemName'], item['sphere'], item['player'], seenLocations[item['id']], newRom)
         
         session.add(newRom)
 

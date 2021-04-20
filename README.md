@@ -17,3 +17,9 @@ join location
   on location.id = item.locationId
 order by rom.id, item.sphere
 ```
+
+## Processing the Data
+`parseResults.py` has a few rough functions that process the data once it's in the database.
+
+- `suggestSampleSize` selects progressively larger subsets of the database to estimate what sample size is required to minimize run-to-run variation. Expects `ladxr_stats.sqlite` to contain around 10,000 seeds for best results.
+- `createItemFrequencyTable` uses the data in `ladxr_stats.sqlite` to create a table showing how often each item shows up in each location. See [suggested formatting](https://docs.google.com/spreadsheets/d/1fYG7p9YDfY1eE3eNhBL02JhMHmFbWfvb7rgd81bnsVc/edit?usp=sharing), shamelessly stolen from the ALTTPR community.
